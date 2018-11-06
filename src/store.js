@@ -74,7 +74,7 @@ export class Store {
   }
 
   set state (v) {
-    if (process.env.NODE_ENV !== 'production') {
+    if (typeof process !== 'undefined' && process.env.NODE_ENV !== 'production') {
       assert(false, `use store.replaceState() to explicit replace store state.`)
     }
   }
@@ -90,7 +90,7 @@ export class Store {
     const mutation = { type, payload }
     const entry = this._mutations[type]
     if (!entry) {
-      if (process.env.NODE_ENV !== 'production') {
+      if (typeof process !== 'undefined' && process.env.NODE_ENV !== 'production') {
         console.error(`[vuex] unknown mutation type: ${type}`)
       }
       return
