@@ -3,7 +3,7 @@ import devtoolPlugin from './plugins/devtool'
 import ModuleCollection from './module/module-collection'
 import { forEachValue, isObject, isPromise, assert } from './util'
 
-let Vue // bind on install
+let Vue //  bind on install
 
 export class Store {
   constructor (options = {}) {
