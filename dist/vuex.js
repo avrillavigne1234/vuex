@@ -403,7 +403,7 @@ Store.prototype.commit = function commit (_type, _payload, _options) {
   this._subscribers.forEach(function (sub) { return sub(mutation, this$1.state); });
 
   if (
-    "development" !== 'production' &&
+    typeof process !== 'undefined' && "development" !== 'production' &&
     options && options.silent
   ) {
     console.warn(
@@ -424,7 +424,7 @@ Store.prototype.dispatch = function dispatch (_type, _payload) {
   var action = { type: type, payload: payload };
   var entry = this._actions[type];
   if (!entry) {
-    {
+    if (typeof process !== 'undefined' && "development" !== 'production') {
       console.error(("[vuex] unknown action type: " + type));
     }
     return
@@ -448,7 +448,7 @@ Store.prototype.subscribeAction = function subscribeAction (fn) {
 Store.prototype.watch = function watch (getter, cb, options) {
     var this$1 = this;
 
-  {
+  if (typeof process !== 'undefined' && "development" !== 'production') {
     assert(typeof getter === 'function', "store.watch only accepts a function.");
   }
   return this._watcherVM.$watch(function () { return getter(this$1.state, this$1.getters); }, cb, options)
@@ -467,7 +467,7 @@ Store.prototype.registerModule = function registerModule (path, rawModule, optio
 
   if (typeof path === 'string') { path = [path]; }
 
-  {
+  if (typeof process !== 'undefined' && "development" !== 'production') {
     assert(Array.isArray(path), "module path must be a string or an Array.");
     assert(path.length > 0, 'cannot register the root module by using registerModule.');
   }
@@ -483,7 +483,7 @@ Store.prototype.unregisterModule = function unregisterModule (path) {
 
   if (typeof path === 'string') { path = [path]; }
 
-  {
+  if (typeof process !== 'undefined' && "development" !== 'production') {
     assert(Array.isArray(path), "module path must be a string or an Array.");
   }
 
@@ -636,7 +636,7 @@ function makeLocalContext (store, namespace, path) {
 
       if (!options || !options.root) {
         type = namespace + type;
-        if ("development" !== 'production' && !store._actions[type]) {
+        if (typeof process !== 'undefined' && "development" !== 'production' && !store._actions[type]) {
           console.error(("[vuex] unknown local action type: " + (args.type) + ", global type: " + type));
           return
         }
@@ -653,7 +653,7 @@ function makeLocalContext (store, namespace, path) {
 
       if (!options || !options.root) {
         type = namespace + type;
-        if ("development" !== 'production' && !store._mutations[type]) {
+        if (typeof process !== 'undefined' && "development" !== 'production' && !store._mutations[type]) {
           console.error(("[vuex] unknown local mutation type: " + (args.type) + ", global type: " + type));
           return
         }
@@ -736,7 +736,7 @@ function registerAction (store, type, handler, local) {
 
 function registerGetter (store, type, rawGetter, local) {
   if (store._wrappedGetters[type]) {
-    {
+    if (typeof process !== 'undefined' && "development" !== 'production') {
       console.error(("[vuex] duplicate getter key: " + type));
     }
     return
@@ -753,7 +753,7 @@ function registerGetter (store, type, rawGetter, local) {
 
 function enableStrictMode (store) {
   store._vm.$watch(function () { return this._data.$$state }, function () {
-    {
+    if (typeof process !== 'undefined' && "development" !== 'production') {
       assert(store._committing, "do not mutate vuex store state outside mutation handlers.");
     }
   }, { deep: true, sync: true });
@@ -772,7 +772,7 @@ function unifyObjectStyle (type, payload, options) {
     type = type.type;
   }
 
-  {
+  if (typeof process !== 'undefined' && "development" !== 'production') {
     assert(typeof type === 'string', ("expects string as the type, but found " + (typeof type) + "."));
   }
 
@@ -781,7 +781,7 @@ function unifyObjectStyle (type, payload, options) {
 
 function install (_Vue) {
   if (Vue && _Vue === Vue) {
-    {
+    if (typeof process !== 'undefined' && "development" !== 'production') {
       console.error(
         '[vuex] already installed. Vue.use(Vuex) should be called only once.'
       );
